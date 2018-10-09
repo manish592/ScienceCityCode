@@ -13,6 +13,7 @@ namespace AccountCore.DataModels
 		public ApplicationUsers()
 		{
 		}
+		
 	}
 
     public class ApplicationRoles : IdentityRole<Guid>

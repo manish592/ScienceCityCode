@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AccountManagerCore\AccountCore.csproj" />
     <ProjectReference Include="..\Science.City.EF.dbmodel\Science.City.EF.dbmodel.csproj" />
+    <ProjectReference Include="..\Science.City.EF.Service\Science.City.EF.Service.csproj" />
   </ItemGroup>
 
 </Project>

@@ -48,13 +48,12 @@ namespace AccountCore.Repositories.Interfaces
         //Task<Tuple<bool, string[]>> UpdateRoleAsync(ApplicationRole role, IEnumerable<string> claims);
         //Task<ApplicationRole> GetRoleByIdAsync(string roleId);
         Task<ApplicationRoles> GetRoleByNameAsync(string roleName);
-        //Task<ApplicationRole> GetRoleLoadRelatedAsync(string roleName);
-        //Task<List<ApplicationRole>> GetRolesLoadRelatedAsync(int page, int pageSize);
-        //
+		//Task<ApplicationRole> GetRoleLoadRelatedAsync(string roleName);
+		//Task<List<ApplicationRole>> GetRolesLoadRelatedAsync(int page, int pageSize);
+		Task<(bool, string[], ApplicationUsers)> CheckPasswordSignInAsync(string email, string Password, bool LockOnFail = false);
+	}
 
-
-
-    }
+	
 
 	public interface IApplicationAccountManager
 	{

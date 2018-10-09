@@ -18,8 +18,8 @@ namespace AccountCore.Repositories
 
 
 
-    public class AccountManager : IAccountManager
-    {
+    public class AccountManager : IAccountManager 
+	{
 
         private readonly UserManager<ApplicationUsers> userManager;
         private readonly SignInManager<ApplicationUsers> signInManager;
@@ -57,6 +57,11 @@ namespace AccountCore.Repositories
             this._roleManager = _roleManager;
             this.signInManager = _signInManager;
         }
+
+
+
+
+
 
         public async Task<(bool, string[])> CreateUserAsync(ApplicationUsers user, IEnumerable<string> roles, string password)
         {
@@ -294,10 +299,12 @@ namespace AccountCore.Repositories
             return await _roleManager.FindByNameAsync(roleName);
         }
 
-        public async Task SignInAsync(ApplicationUsers user, bool isPersistent, string authenticationMethod = null)
-        {
-            await signInManager.SignInAsync(user, isPersistent);
-        }
+		public async Task SignInAsync(ApplicationUsers user, bool isPersistent, string authenticationMethod = null)
+		{
+			
+
+			await signInManager.SignInAsync(user, isPersistent);
+		}
 
         public async Task<IdentityResult> SetLockoutEnabledAsync(ApplicationUsers user, bool enabled)
         {
@@ -315,94 +322,111 @@ namespace AccountCore.Repositories
             return await signInManager.GetTwoFactorAuthenticationUserAsync();
         }
 
+		public async Task<(bool, string[], ApplicationUsers )> CheckPasswordSignInAsync(string email, string Password, bool LockOnFail = false)
+		{
+
+			bool result = false;
+			ApplicationUsers applicationUsers = await userManager.FindByEmailAsync(email);
+
+			if (applicationUsers != null)
+			{
+				SignInResult signInResult = await signInManager.CheckPasswordSignInAsync(applicationUsers, Password, LockOnFail);
+				result = signInResult.Succeeded;
+				return (result, new string[] { }, applicationUsers);
+			}
+			return (result, new string[] {"User not available" },null);
 
 
-
-        //public async Task<ApplicationRole> GetRoleLoadRelatedAsync(string roleName)
-        //{
-        //	var role = await _context.Roles
-        //		.Include(r => r.Claims)
-        //		.Include(r => r.Users)
-        //		.Where(r => r.Name == roleName)
-        //		.FirstOrDefaultAsync();
-
-        //	return role;
-        //}
-
-
-        //public async Task<List<ApplicationRole>> GetRolesLoadRelatedAsync(int page, int pageSize)
-        //{
-        //	IQueryable<ApplicationRole> rolesQuery = _context.Roles
-        //		.Include(r => r.Claims)
-        //		.Include(r => r.Users)
-        //		.OrderBy(r => r.Name);
-
-        //	if (page != -1)
-        //		rolesQuery = rolesQuery.Skip((page - 1) * pageSize);
-
-        //	if (pageSize != -1)
-        //		rolesQuery = rolesQuery.Take(pageSize);
-
-        //	var roles = await rolesQuery.ToListAsync();
-
-        //	return roles;
-        //}
+		}
 
 
 
 
-        //public async Task<Tuple<bool, string[]>> UpdateRoleAsync(ApplicationRole role, IEnumerable<string> claims)
-        //{
-        //	if (claims != null)
-        //	{
-        //		string[] invalidClaims = claims.Where(c => ApplicationPermissions.GetPermissionByValue(c) == null).ToArray();
-        //		if (invalidClaims.Any())
-        //			return Tuple.Create(false, new[] { "The following claim types are invalid: " + string.Join(", ", invalidClaims) });
-        //	}
+		//public async Task<ApplicationRole> GetRoleLoadRelatedAsync(string roleName)
+		//{
+		//	var role = await _context.Roles
+		//		.Include(r => r.Claims)
+		//		.Include(r => r.Users)
+		//		.Where(r => r.Name == roleName)
+		//		.FirstOrDefaultAsync();
+
+		//	return role;
+		//}
 
 
-        //	var result = await _roleManager.UpdateAsync(role);
-        //	if (!result.Succeeded)
-        //		return Tuple.Create(false, result.Errors.Select(e => e.Description).ToArray());
+		//public async Task<List<ApplicationRole>> GetRolesLoadRelatedAsync(int page, int pageSize)
+		//{
+		//	IQueryable<ApplicationRole> rolesQuery = _context.Roles
+		//		.Include(r => r.Claims)
+		//		.Include(r => r.Users)
+		//		.OrderBy(r => r.Name);
+
+		//	if (page != -1)
+		//		rolesQuery = rolesQuery.Skip((page - 1) * pageSize);
+
+		//	if (pageSize != -1)
+		//		rolesQuery = rolesQuery.Take(pageSize);
+
+		//	var roles = await rolesQuery.ToListAsync();
+
+		//	return roles;
+		//}
 
 
-        //	if (claims != null)
-        //	{
-        //		var roleClaims = (await _roleManager.GetClaimsAsync(role)).Where(c => c.Type == CustomClaimTypes.Permission);
-        //		var roleClaimValues = roleClaims.Select(c => c.Value).ToArray();
-
-        //		var claimsToRemove = roleClaimValues.Except(claims).ToArray();
-        //		var claimsToAdd = claims.Except(roleClaimValues).Distinct().ToArray();
-
-        //		if (claimsToRemove.Any())
-        //		{
-        //			foreach (string claim in claimsToRemove)
-        //			{
-        //				result = await _roleManager.RemoveClaimAsync(role, roleClaims.Where(c => c.Value == claim).FirstOrDefault());
-        //				if (!result.Succeeded)
-        //					return Tuple.Create(false, result.Errors.Select(e => e.Description).ToArray());
-        //			}
-        //		}
-
-        //		if (claimsToAdd.Any())
-        //		{
-        //			foreach (string claim in claimsToAdd)
-        //			{
-        //				result = await _roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.Permission, ApplicationPermissions.GetPermissionByValue(claim)));
-        //				if (!result.Succeeded)
-        //					return Tuple.Create(false, result.Errors.Select(e => e.Description).ToArray());
-        //			}
-        //		}
-        //	}
-
-        //	return Tuple.Create(true, new string[] { });
-        //}
 
 
-        //public async Task<bool> TestCanDeleteRoleAsync(string roleId)
-        //{
-        //	return !await _context.UserRoles.Where(r => r.RoleId == roleId).AnyAsync();
-        //}
+		//public async Task<Tuple<bool, string[]>> UpdateRoleAsync(ApplicationRole role, IEnumerable<string> claims)
+		//{
+		//	if (claims != null)
+		//	{
+		//		string[] invalidClaims = claims.Where(c => ApplicationPermissions.GetPermissionByValue(c) == null).ToArray();
+		//		if (invalidClaims.Any())
+		//			return Tuple.Create(false, new[] { "The following claim types are invalid: " + string.Join(", ", invalidClaims) });
+		//	}
 
-    }
+
+		//	var result = await _roleManager.UpdateAsync(role);
+		//	if (!result.Succeeded)
+		//		return Tuple.Create(false, result.Errors.Select(e => e.Description).ToArray());
+
+
+		//	if (claims != null)
+		//	{
+		//		var roleClaims = (await _roleManager.GetClaimsAsync(role)).Where(c => c.Type == CustomClaimTypes.Permission);
+		//		var roleClaimValues = roleClaims.Select(c => c.Value).ToArray();
+
+		//		var claimsToRemove = roleClaimValues.Except(claims).ToArray();
+		//		var claimsToAdd = claims.Except(roleClaimValues).Distinct().ToArray();
+
+		//		if (claimsToRemove.Any())
+		//		{
+		//			foreach (string claim in claimsToRemove)
+		//			{
+		//				result = await _roleManager.RemoveClaimAsync(role, roleClaims.Where(c => c.Value == claim).FirstOrDefault());
+		//				if (!result.Succeeded)
+		//					return Tuple.Create(false, result.Errors.Select(e => e.Description).ToArray());
+		//			}
+		//		}
+
+		//		if (claimsToAdd.Any())
+		//		{
+		//			foreach (string claim in claimsToAdd)
+		//			{
+		//				result = await _roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.Permission, ApplicationPermissions.GetPermissionByValue(claim)));
+		//				if (!result.Succeeded)
+		//					return Tuple.Create(false, result.Errors.Select(e => e.Description).ToArray());
+		//			}
+		//		}
+		//	}
+
+		//	return Tuple.Create(true, new string[] { });
+		//}
+
+
+		//public async Task<bool> TestCanDeleteRoleAsync(string roleId)
+		//{
+		//	return !await _context.UserRoles.Where(r => r.RoleId == roleId).AnyAsync();
+		//}
+
+	}
 }

@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+	<title>@ViewBag.Title</title>
+	<environment include="Development">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link href="~/css/jquery.mCustomScrollbar.css" rel="stylesheet" />
+		<link href="~/css/sidebar-menu.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/responsive.css">
+
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	</environment>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="left-sidebar">
+			<div class="dashboard-logo">
+				<a href="#">
+					<img src="img/logo_dashboard.png" alt="Logo Image" class="img-fluid logo-with-text">
+					<img src="img/logo-icon.png" alt="Logo Image" class="img-fluid logo-icon">
+				</a>
+			</div>
+			@{await Html.RenderPartialAsync("_internalmenus");}
+			<p class="text-center"><small>Copyright &#169; 2018 ScienceCity.com</small></p>
+		</div>
+		<div class="right-side-panel">
+			<header class="fixed-top bg-dark">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-12">
+							<a href="javascript:void(0);" class="toggle-sidebar rounded d-none d-sm-block">
+								<i class="icon icon-menu"></i>
+							</a>
+							<div class="search-box d-none d-lg-block">
+								<input type="search" class="form-control" placeholder="Search Here...">
+								<i class="fa fa-search"></i>
+							</div>
+							<ul class="float-right mb-0 p-0">
+								<li class="messages  d-none d-sm-block">
+									<a href="#">
+										<i class="icon icon-email-ico"></i>
+									</a>
+									<span>10</span>
+								</li>
+								<li class="notifications  d-none d-sm-block">
+									<a href="#">
+										<i class="icon icon-alert-ico"></i>
+									</a>
+									<span>10</span>
+								</li>
+								<li class="dropdown">
+
+									<a href="javascript:void(0);" class="dropdown-toggle text-white" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<img src="img/user_img.png" class="mr-2">John Deo
+									</a>
+									<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+										<a class="dropdown-item" href="#">Profile</a>
+										<a class="dropdown-item" href="#">LogOut</a>
+									</div>
+									<a href="javascript:void(0);" class="toggle-sidebar rounded d-block d-sm-none">
+										<i class="icon icon-menu"></i>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</header>
+			@RenderBody()
+		</div>
+		</div>
+		<environment include="Development">
+			<script src="/js/jquery.min.js"></script>
+			<script src="/js/popper.min.js"></script>
+			<script src="/js/bootstrap.min.js"></script>
+			<script src="~/js/sidebar-menu.js"></script>
+			<script src="~/js/jquery.mCustomScrollbar.js"></script>
+			<script src="~/js/Chart.js"></script>
+			<script src="js/script.js"></script>
+		</environment>
+
+</body>
+</html>

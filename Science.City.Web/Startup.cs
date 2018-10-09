@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AccountCore.DataModels;
 using AccountCore.ServiceInjects;
+using CRM.DatabaseServiceLayer.Services.Repository.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Science.City.EF.dbmodel;
+using Science.City.EF.dbmodel.Models;
+using StudentCounselling.Services.Repository.Services;
 
 namespace Science.City.Web
 {
@@ -69,8 +72,14 @@ namespace Science.City.Web
 
 			services.AddSession();
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+			services.AddTransient<IRepository<Packages>, Repository<Packages>>();
+
+			
 			services.AddAccountManager();
-			AutoMapper.Mapper.Initialize(cfg => { cfg.AddProfile<Science.City.Web.Mapper.Mapper>(); });
+			AutoMapper.Mapper.Initialize(cfg => {
+
+				cfg.AddProfile<Science.City.Web.Mapper.Mapper>();
+			});
 		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,7 +101,7 @@ namespace Science.City.Web
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Account}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

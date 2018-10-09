@@ -1,33 +1,217 @@
 ﻿@model Science.City.Web.ViewModels.RoleViewModel
 
 @{
-    ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_UserLayout.cshtml";
+	ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
-
-<h4>ApplicationRoles</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Index">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="RoleName" class="control-label"></label>
-                <input asp-for="RoleName" class="form-control" />
-                <span asp-validation-for="RoleName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
-    </div>
+<div class="row body-content-wrap pt-5 mt-3">
+	<div class="container-fluid pt-2 pb-3">
+		<div class="bg-white p-3 shadow-sm">
+			<div class="row">
+				<div class="col-12 col-sm-12 col-md-6 col-lg-3 mb-3 mb-lg-0">
+					<div class="heighlights-featues py-4 px-3 total-sales-wrap">
+						<div class="icon-box">
+							<i class="icon icon-sales"></i>
+						</div>
+						<div class="featued-detail">
+							<p class="m-0">TOTAL SALES</p>
+							<h3>215,645</h3>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-sm-12 col-md-6 col-lg-3 mb-3 mb-lg-0">
+					<div class="heighlights-featues py-4 px-3 total-visitors-wrap">
+						<div class="icon-box">
+							<i class="icon icon-visitors"></i>
+						</div>
+						<div class="featued-detail">
+							<p class="m-0">VISITORS</p>
+							<h3>111000</h3>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-sm-12 col-md-6 col-lg-3 mb-3 mb-lg-0">
+					<div class="heighlights-featues py-4 px-3 total-paid-amount-wrap">
+						<div class="icon-box">
+							<i class="icon icon-dollor"></i>
+						</div>
+						<div class="featued-detail">
+							<p class="m-0">Paid Amount</p>
+							<h3>&dollar;98,000</h3>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-sm-12 col-md-6 col-lg-3 mb-3 mb-lg-0">
+					<div class="heighlights-featues py-4 px-3 total-commission-wrap">
+						<div class="icon-box">
+							<i class="icon icon-money"></i>
+						</div>
+						<div class="featued-detail">
+							<p class="m-0">Commission</p>
+							<h3>&dollar;20,000</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12 col-sm-12 col-md-12 col-lg-3 order-lg-2 mt-3 right-sidebar-member-list">
+					<div class="border p-3">
+						<h3 class="head24">Staff Member</h3>
+						<div class="div-scrollable  mCustomScrollbar">
+							<div class="staff-member-list">
+								<ul class="p-0">
+									<li>
+										<span>
+											<img class="img-fluid rounded-circle" src="img/staff_03.png" alt="staff member name">
+										</span>
+										<div class="staff-member-detail">
+											<h5>Staff Name-1</h5>
+											<p>Lorem Ipsum dummy text</p>
+										</div>
+									</li>
+									<li>
+										<span>
+											<img class="img-fluid rounded-circle" src="img/staff_03.png" alt="staff member name">
+										</span>
+										<div class="staff-member-detail">
+											<h5>Staff Name-1</h5>
+											<p>Lorem Ipsum dummy text</p>
+										</div>
+									</li>
+									<li>
+										<span>
+											<img class="img-fluid rounded-circle" src="img/staff_03.png" alt="staff member name">
+										</span>
+										<div class="staff-member-detail">
+											<h5>Staff Name-1</h5>
+											<p>Lorem Ipsum dummy text</p>
+										</div>
+									</li>
+									<li>
+										<span>
+											<img class="img-fluid rounded-circle" src="img/staff_03.png" alt="staff member name">
+										</span>
+										<div class="staff-member-detail">
+											<h5>Staff Name-1</h5>
+											<p>Lorem Ipsum dummy text</p>
+										</div>
+									</li>
+									<li>
+										<span>
+											<img class="img-fluid rounded-circle" src="img/staff_03.png" alt="staff member name">
+										</span>
+										<div class="staff-member-detail">
+											<h5>Staff Name-1</h5>
+											<p>Lorem Ipsum dummy text</p>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<a href="javascript:void(0);" class="add-new-btn btn btn-primary btn-block border-0">
+							<i class="icon icon-add d-inline-block mr-2"></i>Add New
+						</a>
+					</div>
+				</div>
+				<div class="col-12 col-sm-12 col-md-12 col-lg-9 mt-3">
+					<div class="border p-3 pt-3 pb-5">
+						<h3 class="head24">Visitors</h3>
+						<canvas id="myChart" style="width:100%; max-height:372px !important;"></canvas>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-3 customer-rating-wrap">
+				<div class="col-12">
+					<div class="border pt-3">
+						<div class="row">
+							<div class="col-12 col-sm-6 text-center text-sm-left">
+								<h3 class="head24 pl-0 pl-sm-4">Customer Ratings</h3>
+							</div>
+							<div class="col-12 col-sm-6 text-center text-sm-right">
+								<span class="total-votes mr-2">2,45,567 Votes</span>
+								<span class="mr-0 mr-sm-4">
+									<a href="#" class="text-blue"><i class="icon icon-refresh"></i></a>
+								</span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12">
+								<div class="table-responsive">
+									<table class="table table-bordered m-0">
+										<tr>
+											<td class="pl-4">
+												<i class="icon icon-satisfied mr-2 text-info"></i>Yeah I’ m Satisfied with it
+											</td>
+											<td class="text-center">
+												<div class="progress">
+													<div class="progress-bar bg-info" role="progressbar" style="width: 75%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+												</div>
+											</td>
+											<td>75%</td>
+										</tr>
+										<tr>
+											<td class="pl-4">
+												<i class="icon icon-average mr-2 text-warning"></i>Average, Not Bad
+											</td>
+											<td class="text-center">
+												<div class="progress">
+													<div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+												</div>
+											</td>
+											<td>50%</td>
+										</tr>
+										<tr>
+											<td class="pl-4">
+												<i class="icon icon-not-satisfied mr-2 text-light-orange"></i>Not usefull at all it Sucks
+											</td>
+											<td class="text-center">
+												<div class="progress">
+													<div class="progress-bar bg-light-orange" role="progressbar" style="width: 10%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+												</div>
+											</td>
+											<td>10%</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+	<div class="row">
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+		@if (ViewData.ModelState.Any())
+		{
+			await Html.RenderPartialAsync("_message", ViewData.ModelState);
+		}
+
+	</div>
+
+
+
+
+	<div class="row">
+
+		<div class="col-md-4">
+			<form asp-action="Index">
+				<div class="form-group">
+					<label asp-for="RoleName" class="control-label"></label>
+					<input asp-for="RoleName" class="form-control" />
+					<span asp-validation-for="RoleName" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<input type="submit" value="Create" class="btn btn-default" />
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div>
+		<a asp-action="Index">Back to List</a>
+	</div>
+<script src="/js/Chart.js"></script>

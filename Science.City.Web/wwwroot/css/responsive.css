@@ -1,0 +1,95 @@
+@media screen and (min-width:768px) and (max-width:991px) {
+	.heighlights-featues .icon-box {
+		width: 76px;
+		font-size: 75px;
+	}
+
+	.heighlights-featues .featued-detail {
+		width: calc(100% - 70px);
+	}
+
+	.customer-rating-wrap table tr td {
+		white-space: nowrap;
+	}
+}
+
+@media screen and (max-width:767px) {
+	.right-side-panel {
+		padding-left: 50px;
+	}
+
+		.right-side-panel header {
+			left: 50px;
+		}
+
+	.left-sidebar {
+		width: 50px;
+	}
+
+		.left-sidebar .dashboard-logo {
+			padding: 12px 5px;
+		}
+
+			.left-sidebar .dashboard-logo .logo-icon {
+				display: block;
+			}
+
+			.left-sidebar .dashboard-logo .logo-with-text {
+				display: none;
+			}
+
+		.left-sidebar .sidebar-menu > li > a .icon {
+			font-size: 24px;
+		}
+
+		.left-sidebar.move-side-bar {
+			width: 240px;
+		}
+
+			.left-sidebar.move-side-bar .dashboard-logo {
+				padding: 18px;
+			}
+
+				.left-sidebar.move-side-bar .dashboard-logo .logo-icon {
+					display: none;
+				}
+
+				.left-sidebar.move-side-bar .dashboard-logo .logo-with-text {
+					display: block;
+				}
+
+				.left-sidebar.move-side-bar .dashboard-logo span {
+					display: none;
+					transition: all ease-in-out 2s;
+				}
+
+			.left-sidebar.move-side-bar .sidebar-menu > li > a .icon {
+				font-size: 18px;
+			}
+
+	h3.head24 {
+		font-size: 20px;
+	}
+}
+
+@media screen and (max-width:575px) {
+	.right-side-panel header ul li a i {
+		font-size: 14px;
+		line-height: 14px;
+	}
+
+	.heighlights-featues {
+		display: inherit;
+	}
+
+		.heighlights-featues .icon-box,
+		.heighlights-featues .featued-detail {
+			display: inherit;
+			width: 100%;
+			text-align: center;
+		}
+
+	.customer-rating-wrap table tr td {
+		white-space: nowrap;
+	}
+}

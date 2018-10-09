@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AccountCore.DataModels;
 using AccountCore.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Science.City.Web.Helpers;
 using Science.City.Web.ViewModels;
 
 namespace Science.City.Web.Controllers
@@ -29,7 +30,6 @@ namespace Science.City.Web.Controllers
 		}
 
 
-
 		[HttpPost]
 		public async Task<IActionResult> Index(RoleViewModel roleViewModel) {
 
@@ -37,16 +37,27 @@ namespace Science.City.Web.Controllers
 			{
 				var applicationRole = AutoMapper.Mapper.Map<ApplicationRoles>(roleViewModel);
 				(bool result, string[] role) = await accountManager.CreateRoleAsync(applicationRole, null);
-
-				if (result)
+				if (!result)
 				{
-
+					ModelState.AddModelError(EnumAlert.Error.ToString(), string.Join(",", role));
+				}
+				else {
+					ModelState.AddModelError(EnumAlert.Info.ToString(),$"Successfully Added { roleViewModel.RoleName }" );
+					
 				}
 			}
 			return View(roleViewModel);
 		}
 
+		[HttpGet]
+
+		public IActionResult Profile()
+		{
+
+			return View();
+		}
 
 
-    }
+
+	}
 }
