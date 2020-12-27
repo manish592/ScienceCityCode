@@ -1,30 +1,42 @@
-﻿<!DOCTYPE html>
-
+﻿@using static Science.City.EF.Service.Helpers.Common;
+<!DOCTYPE html>
 <html>
 <head>
 	<title>@ViewBag.Title</title>
-	<environment include="Development">
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<link rel="stylesheet" href="css/bootstrap.min.css">
-		<link href="~/css/jquery.mCustomScrollbar.css" rel="stylesheet" />
-		<link href="~/css/sidebar-menu.css" rel="stylesheet" />
-		<link rel="stylesheet" href="css/style.css">
-		<link rel="stylesheet" href="css/responsive.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="@Url.Content("~/css/bootstrap.min.css")">
+	<link href="@Url.Content("~/css/jquery.mCustomScrollbar.css")" rel="stylesheet" />
+	<link href="@Url.Content("~/css/sidebar-menu.css")" rel="stylesheet" />
+	<link rel="stylesheet" href="@Url.Content(string.Format("~/css/layout.css?v={0}",DateTime.Now.Ticks))">
+	<link rel="stylesheet" href="@Url.Content(string.Format("~/css/adminResponsive.css?v={0}",DateTime.Now.Ticks))">
+	<link rel="stylesheet" href="@Url.Content("~/css/responsive.css")">
+	<link rel="stylesheet" href="@Url.Content(string.Format("http://cdn.jsdelivr.net/npm/gijgo@1.9.10/css/gijgo.min.css?v={0}", DateTime.Now.AddYears(1)))">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/swiper@4.4.1/dist/js/swiper.min.js">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
-		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	</environment>
 </head>
 <body>
 	<div class="container-fluid">
 		<div class="left-sidebar">
 			<div class="dashboard-logo">
 				<a href="#">
-					<img src="img/logo_dashboard.png" alt="Logo Image" class="img-fluid logo-with-text">
-					<img src="img/logo-icon.png" alt="Logo Image" class="img-fluid logo-icon">
+					<img src="@Url.Content("~/img/logo_dashboard.png")" alt="Logo Image" class="img-fluid logo-with-text">
+					<img src="@Url.Content("~/img/logo-icon.png")" alt="Logo Image" class="img-fluid logo-icon">
 				</a>
 			</div>
-			@{await Html.RenderPartialAsync("_internalmenus");}
+			@{
+				if (User.IsInRole(GetDescription(Role.ADMIN)))
+				{
+					await Html.RenderPartialAsync("_internalmenus");
+				}
+				else //if (User.IsInRole(GetDescription(Role.USER)) || User.IsInRole(GetDescription(Role.MEMBERSHIP)) || User.IsInRole(GetDescription(Role.TOUROPERATOR)) || User.IsInRole(GetDescription(Role.SCHOOL)) || User.IsInRole(GetDescription(Role.DEPUTYGENERALMANAGER)) || User.IsInRole(GetDescription(Role.ASSISTANEESTATEOFFICER)))
+				{
+					await Html.RenderPartialAsync("_userinternalmenus");
+				}
+			}
 			<p class="text-center"><small>Copyright &#169; 2018 ScienceCity.com</small></p>
 		</div>
 		<div class="right-side-panel">
@@ -35,53 +47,59 @@
 							<a href="javascript:void(0);" class="toggle-sidebar rounded d-none d-sm-block">
 								<i class="icon icon-menu"></i>
 							</a>
-							<div class="search-box d-none d-lg-block">
-								<input type="search" class="form-control" placeholder="Search Here...">
-								<i class="fa fa-search"></i>
-							</div>
+							@*<div class="search-box d-none d-lg-block">
+									<input type="search" class="form-control" placeholder="Search Here...">
+									<i class="fa fa-search"></i>
+								</div>*@
 							<ul class="float-right mb-0 p-0">
-								<li class="messages  d-none d-sm-block">
-									<a href="#">
-										<i class="icon icon-email-ico"></i>
-									</a>
-									<span>10</span>
-								</li>
-								<li class="notifications  d-none d-sm-block">
-									<a href="#">
-										<i class="icon icon-alert-ico"></i>
-									</a>
-									<span>10</span>
-								</li>
-								<li class="dropdown">
-
-									<a href="javascript:void(0);" class="dropdown-toggle text-white" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<img src="img/user_img.png" class="mr-2">John Deo
-									</a>
-									<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-										<a class="dropdown-item" href="#">Profile</a>
-										<a class="dropdown-item" href="#">LogOut</a>
-									</div>
-									<a href="javascript:void(0);" class="toggle-sidebar rounded d-block d-sm-none">
-										<i class="icon icon-menu"></i>
-									</a>
-								</li>
+								@*<li class="messages  d-none d-sm-block">
+										<a href="#">
+											<i class="icon icon-email-ico"></i>
+										</a>
+										<span>10</span>
+									</li>
+									<li class="notifications  d-none d-sm-block">
+										<a href="#">
+											<i class="icon icon-alert-ico"></i>
+										</a>
+										<span>10</span>
+									</li>*@
+								@{await Html.RenderPartialAsync("_profile"); }
 							</ul>
 						</div>
 					</div>
 				</div>
 			</header>
-			@RenderBody()
+			<div class="row body-content-wrap pt-5 mt-3">
+				<div class="container-fluid pt-2 pb-3">
+					@RenderBody()
+				</div>
+			</div>
 		</div>
-		</div>
-		<environment include="Development">
-			<script src="/js/jquery.min.js"></script>
-			<script src="/js/popper.min.js"></script>
-			<script src="/js/bootstrap.min.js"></script>
-			<script src="~/js/sidebar-menu.js"></script>
-			<script src="~/js/jquery.mCustomScrollbar.js"></script>
-			<script src="~/js/Chart.js"></script>
-			<script src="js/script.js"></script>
-		</environment>
+		<script>
+			var thirdparty = '@GetDescription(Role.SOUVENIRSHOP).ToUpper()'
+			var Media='@GetDescription(Role.GENERALIST).ToUpper()'
+		</script>
+		<script src="@Url.Content("~/js/jquery.min.js")"></script>
+		<script src="@Url.Content("~/js/popper.min.js")"></script>
+		<script src="@Url.Content("~/js/bootstrap.min.js")"></script>
+		<script src="@Url.Content("~/js/sidebar-menu.js")"></script>
+		<script src="~/js/nicescroll.min.js"></script>
+		<script src="@Url.Content("~/js/Chart.js")"></script>
+		<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js?v=1.4"></script>
+		<script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.10/js/gijgo.min.js?v=1.1"></script>
+		<script src="@Url.Content("~/js/Adminscript.js")"></script>
+		<script src="@Url.Content("~/js/ajax.js")"></script>
+		<script src="@Url.Content("~/js/country.js")"></script>
+
+		<script src="@Url.Content("~/js/custom.js")"></script>
+		@{
+			await Html.RenderPartialAsync("_ValidationScriptsPartial");
+		}
+	</div>
+	<div class="loader">
+		<img src="~/img/scienceCity.gif" />
+	</div>
 
 </body>
 </html>

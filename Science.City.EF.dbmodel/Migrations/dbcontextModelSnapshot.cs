@@ -16,14 +16,21 @@ namespace Science.City.EF.dbmodel.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AccountCore.DataModels.ApplicationRoles", b =>
+            modelBuilder.Entity("EF.dbmodel.Models.ApplicationRoles", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("AliasName");
+
                     b.Property<string>("ConcurrencyStamp");
+
+                    b.Property<bool>("IsInternalRole");
+
+                    b.Property<bool>("IsSync");
 
                     b.Property<string>("Name");
 
@@ -34,22 +41,56 @@ namespace Science.City.EF.dbmodel.Migrations
                     b.ToTable("AppRoles");
                 });
 
-            modelBuilder.Entity("AccountCore.DataModels.ApplicationUsers", b =>
+            modelBuilder.Entity("EF.dbmodel.Models.ApplicationUsers", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<string>("Address");
+
+                    b.Property<string>("AlternateNumber");
+
+                    b.Property<Guid>("ApprovedBy");
+
+                    b.Property<string>("ApprovedKey");
+
+                    b.Property<int>("CityFK");
+
                     b.Property<string>("ConcurrencyStamp");
+
+                    b.Property<int>("CountryFK");
 
                     b.Property<string>("Email");
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("GSTNumber");
+
+                    b.Property<string>("ImagePath");
+
+                    b.Property<bool>("IsApproved");
+
+                    b.Property<bool?>("IsInternalRole");
+
+                    b.Property<bool>("IsProfileComplete");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<string>("LastName");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<bool>("Loginstatus");
+
+                    b.Property<string>("MobileNumber");
+
+                    b.Property<string>("NewsPaperCompany");
 
                     b.Property<string>("NormalizedEmail");
 
@@ -61,7 +102,15 @@ namespace Science.City.EF.dbmodel.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<string>("PinCode");
+
+                    b.Property<string>("PressIDCard");
+
+                    b.Property<string>("PressReporterName");
+
                     b.Property<string>("SecurityStamp");
+
+                    b.Property<int>("StateFK");
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -69,7 +118,70 @@ namespace Science.City.EF.dbmodel.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApprovedKey")
+                        .IsUnique()
+                        .HasFilter("[ApprovedKey] IS NOT NULL");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("EF.dbmodel.Models.MemberShipVisit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CheckIn");
+
+                    b.Property<DateTime>("Checkout");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<Guid>("FKUserId");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FKUserId");
+
+                    b.ToTable("MemberShipVisit");
+                });
+
+            modelBuilder.Entity("EF.dbmodel.Models.UserDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("DesignationFK");
+
+                    b.Property<string>("GST");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<string>("OrganizationName");
+
+                    b.Property<string>("PanNo");
+
+                    b.Property<string>("PhotographURL");
+
+                    b.Property<Guid>("UserId");
+
+                    b.Property<string>("Website");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserDetails");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -91,7 +203,8 @@ namespace Science.City.EF.dbmodel.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClaimType");
 
@@ -147,44 +260,1057 @@ namespace Science.City.EF.dbmodel.Migrations
                     b.ToTable("UserToken");
                 });
 
-            modelBuilder.Entity("Science.City.EF.dbmodel.Models.ApplicationUserDetail", b =>
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.AppPermissions", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("FirstName");
+                    b.Property<DateTime>("CreatedOn");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("Detail");
 
-                    b.Property<Guid>("UserId");
+                    b.Property<string>("FriendlyName");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.ToTable("AppPermissionsMst");
+                });
 
-                    b.ToTable("UserDetails");
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CategoryName");
+
+                    b.Property<decimal>("CategoryPrice");
+
+                    b.Property<int>("Complimentary");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsGroup");
+
+                    b.Property<bool>("IsMemberShipAllow");
+
+                    b.Property<bool>("IsOnline");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<bool>("IsThirdParty");
+
+                    b.Property<int>("MemberShipPerson");
+
+                    b.Property<decimal>("MemberShipPrice");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<int>("NoofAdults");
+
+                    b.Property<int>("NoofMinors");
+
+                    b.Property<int>("TotalMembers");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Counter", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AllocateTo");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsAllocate");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Counter");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Coupon", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApproveKey");
+
+                    b.Property<string>("Couponid");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsPayable");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<int>("NoOfComplementary");
+
+                    b.Property<int>("NoOfStudent");
+
+                    b.Property<int>("NoOfTeacher");
+
+                    b.Property<int>("NoofMember");
+
+                    b.Property<Guid>("UserFK");
+
+                    b.Property<DateTime>("ValidDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserFK");
+
+                    b.ToTable("Coupon");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Group", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address");
+
+                    b.Property<int>("CityFK");
+
+                    b.Property<string>("ContactPersion");
+
+                    b.Property<int>("CountryFK");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("DocumentPath");
+
+                    b.Property<string>("Email");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsApproved");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<int>("JuniorVisitorNumber");
+
+                    b.Property<string>("Mobile");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Phone");
+
+                    b.Property<string>("PhotographURL");
+
+                    b.Property<string>("PinCode");
+
+                    b.Property<int>("SeniorVisitorNumber");
+
+                    b.Property<int>("StateFK");
+
+                    b.Property<string>("Strngth");
+
+                    b.Property<string>("Title");
+
+                    b.Property<int>("Type");
+
+                    b.Property<Guid>("UserID");
+
+                    b.Property<DateTime>("VisitDate");
+
+                    b.Property<string>("Website");
+
+                    b.Property<Guid?>("ticketId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ticketId");
+
+                    b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.GroupDocumentLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Comment");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("DocumentPath");
+
+                    b.Property<Guid>("GroupFK");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsApproved");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<Guid>("UserFK");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupFK");
+
+                    b.HasIndex("UserFK");
+
+                    b.ToTable("GroupDocumentLink");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Inventory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AvailableQuantity");
+
+                    b.Property<decimal>("CGST");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<decimal>("GST");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<string>("Name");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<Guid>("ProductFK");
+
+                    b.Property<decimal>("SGST");
+
+                    b.Property<Guid>("ShopFK");
+
+                    b.Property<int>("TotalQuantity");
+
+                    b.Property<Guid>("UnitFK");
+
+                    b.Property<Guid>("UserFK");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductFK");
+
+                    b.HasIndex("ShopFK");
+
+                    b.HasIndex("UnitFK");
+
+                    b.HasIndex("UserFK");
+
+                    b.ToTable("Inventory","Inventory");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Item", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("Categoryid");
+
+                    b.Property<decimal?>("Commision");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("Description");
+
+                    b.Property<decimal?>("DirectDiscount");
+
+                    b.Property<decimal?>("GST");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsMandatory");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<bool>("IsThirdParty");
+
+                    b.Property<bool>("IsTimeBased");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<string>("Name");
+
+                    b.Property<decimal?>("PercentageDiscount");
+
+                    b.Property<decimal?>("SalePrice");
+
+                    b.Property<decimal?>("TotalPrice");
+
+                    b.Property<Guid?>("User_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("User_id");
+
+                    b.ToTable("ItemMst");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.ItemCategoryLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("CategoryFK");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<decimal>("DirectDiscount");
+
+                    b.Property<decimal>("GroupDiscount");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<Guid>("ItemFK");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<decimal>("PercentageDiscount");
+
+                    b.Property<decimal>("SalePrice");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryFK");
+
+                    b.HasIndex("ItemFK", "CategoryFK");
+
+                    b.ToTable("ItemCategoryLink");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.ItemSittingPlan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<DateTime>("DateFrom");
+
+                    b.Property<DateTime?>("DateTo");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<Guid>("ItemFK");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<int>("OnlineSeat");
+
+                    b.Property<int>("Reserved");
+
+                    b.Property<int>("TotalSeats");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemFK");
+
+                    b.ToTable("ItemSittingPlan");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.ItemTimming", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<int>("Day");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsOnline");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<Guid>("ItemFK");
+
+                    b.Property<Guid>("Key");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<string>("Timming");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemFK");
+
+                    b.ToTable("ItemTimming");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.ItemUserLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<Guid>("ItemFK");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<Guid>("UserFK");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemFK");
+
+                    b.HasIndex("UserFK");
+
+                    b.ToTable("ItemUserLink");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Masterkey", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<int>("End");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<int>("Key");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<string>("PrefixName");
+
+                    b.Property<int>("Start");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Masterkey");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.MemberShip", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<Guid>("ApproveBy");
+
+                    b.Property<string>("ApproveKey");
+
+                    b.Property<DateTime>("ApprovedDate");
+
+                    b.Property<string>("CardPath");
+
+                    b.Property<Guid>("CategoryFK");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("DocumentPath");
+
+                    b.Property<DateTime>("ExpiryDate");
+
+                    b.Property<string>("FamilyMemberDetail");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsApproved");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<int>("PaymentStatus");
+
+                    b.Property<DateTime>("PaymnetDate");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<int>("TotalMember");
+
+                    b.Property<Guid>("UserFK");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApproveKey")
+                        .IsUnique()
+                        .HasFilter("[ApproveKey] IS NOT NULL");
+
+                    b.HasIndex("CategoryFK");
+
+                    b.HasIndex("UserFK");
+
+                    b.ToTable("MemberShip");
                 });
 
             modelBuilder.Entity("Science.City.EF.dbmodel.Models.Packages", b =>
                 {
-                    b.Property<Guid>("PackageId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("Classification");
 
-                    b.Property<bool>("CpTckAp");
+                    b.Property<int>("CpTckAp");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsMembershipAllow");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<string>("PackageItem");
 
                     b.Property<string>("PackageName");
 
                     b.Property<int>("PackageType");
 
-                    b.Property<decimal>("RateofPackage");
+                    b.Property<decimal>("RateofPackage")
+                        .HasColumnType("decimal(5, 2)");
 
-                    b.Property<bool>("ShowsInPack");
+                    b.Property<string>("ShowsInPack");
 
-                    b.HasKey("PackageId");
+                    b.Property<string>("descriptions");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Packages");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.ParkingCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CGST");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<string>("Name");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<int>("SGST");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ParkingCategory");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.ParkingTicket", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<int>("CGST");
+
+                    b.Property<decimal>("CGSTAmount");
+
+                    b.Property<Guid>("CounterFK");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<decimal>("Miscellaneous");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<Guid>("ParkingCategoryFK");
+
+                    b.Property<string>("PaymentMode");
+
+                    b.Property<string>("RequestId");
+
+                    b.Property<int>("SGST");
+
+                    b.Property<decimal>("SGSTAmount");
+
+                    b.Property<decimal>("SoldAmount");
+
+                    b.Property<Guid>("UserFK");
+
+                    b.Property<string>("VehicleNumber");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CounterFK");
+
+                    b.HasIndex("ParkingCategoryFK");
+
+                    b.HasIndex("RequestId")
+                        .IsUnique()
+                        .HasFilter("[RequestId] IS NOT NULL");
+
+                    b.HasIndex("UserFK");
+
+                    b.ToTable("ParkingTicket");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Amount");
+
+                    b.Property<string>("BankRefNo");
+
+                    b.Property<string>("CardName");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("Currency");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("FailureMessage");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<Guid?>("MemberShipFK");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<string>("OrderId");
+
+                    b.Property<string>("OrderStatus");
+
+                    b.Property<string>("PaymentMode");
+
+                    b.Property<string>("TackingId");
+
+                    b.Property<Guid?>("TicketFK");
+
+                    b.Property<int>("Type");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberShipFK");
+
+                    b.HasIndex("TicketFK");
+
+                    b.ToTable("Payment");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Product", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AliasName");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<string>("Name");
+
+                    b.Property<Guid>("ProductCategoryFK");
+
+                    b.Property<int>("Type");
+
+                    b.Property<Guid>("UserFK");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductCategoryFK");
+
+                    b.HasIndex("UserFK");
+
+                    b.ToTable("Product","Inventory");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.ProductCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductCategory","Inventory");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Report", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Action");
+
+                    b.Property<string>("Area");
+
+                    b.Property<string>("Controller");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Header");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<Guid>("Key");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Report");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Sale", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Description");
+
+                    b.Property<decimal>("GrandTotal");
+
+                    b.Property<string>("InvoiceNumber");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<int>("PaymentMode");
+
+                    b.Property<Guid>("ShopFK");
+
+                    b.Property<Guid>("UserFK");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShopFK");
+
+                    b.HasIndex("UserFK");
+
+                    b.ToTable("Sale","Inventory");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.SaleLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<int>("CGST");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<decimal>("Discount");
+
+                    b.Property<int>("DiscountPercentage");
+
+                    b.Property<int>("GST");
+
+                    b.Property<Guid>("InventoryFK");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<int>("Quantity");
+
+                    b.Property<int>("SGST");
+
+                    b.Property<Guid>("SaleFK");
+
+                    b.Property<Guid>("UnitFK");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InventoryFK");
+
+                    b.HasIndex("SaleFK");
+
+                    b.ToTable("SaleLink","Inventory");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.School", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address");
+
+                    b.Property<int>("CityFK");
+
+                    b.Property<string>("ContactPersion");
+
+                    b.Property<int>("CountryFK");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("DocumentName");
+
+                    b.Property<string>("DocumentPath");
+
+                    b.Property<string>("Email");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<string>("Mobile");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Phone");
+
+                    b.Property<string>("PinCode");
+
+                    b.Property<int>("StateFK");
+
+                    b.Property<string>("Strngth");
+
+                    b.Property<string>("Title");
+
+                    b.Property<int>("Type");
+
+                    b.Property<Guid>("UserFK");
+
+                    b.Property<string>("Website");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserFK");
+
+                    b.ToTable("School");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Shift", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<string>("AmountDetail");
+
+                    b.Property<Guid?>("CounterFK");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<DateTime?>("Endtime");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<DateTime>("Starttime");
+
+                    b.Property<Guid>("UserFK");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CounterFK");
+
+                    b.HasIndex("UserFK");
+
+                    b.ToTable("Shift");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Shop", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<string>("Name");
+
+                    b.Property<decimal>("SharePercentage");
+
+                    b.Property<Guid>("UserFK");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserFK");
+
+                    b.ToTable("Shops","Inventory");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.SpecialDiscount", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<DateTime>("DateFrom");
+
+                    b.Property<DateTime>("DateTo");
+
+                    b.Property<int>("Discount");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsPackage");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SpecialDiscount");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.SpecialDiscountLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<Guid?>("ItemFK");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<Guid?>("PackageFK");
+
+                    b.Property<Guid>("SpecialDiscountFK");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemFK");
+
+                    b.HasIndex("PackageFK");
+
+                    b.HasIndex("SpecialDiscountFK");
+
+                    b.ToTable("SpecialDiscountLink");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.SubUnit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<string>("Name");
+
+                    b.Property<Guid>("UnitFK");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UnitFK");
+
+                    b.ToTable("SubUnit","Inventory");
                 });
 
             modelBuilder.Entity("Science.City.EF.dbmodel.Models.Ticket", b =>
@@ -192,21 +1318,379 @@ namespace Science.City.EF.dbmodel.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<Guid>("ApprovedBy");
+
+                    b.Property<Guid>("BookedBy");
+
+                    b.Property<int>("Category");
+
+                    b.Property<DateTime>("CheckIn");
+
+                    b.Property<DateTime>("Checkout");
+
+                    b.Property<Guid?>("CounterFK");
+
+                    b.Property<Guid?>("CouponFK");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<DateTime>("Dateofvisits");
+
                     b.Property<string>("Description");
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("InvoiceNo");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsApproved");
+
+                    b.Property<bool>("IsDuplicate");
+
+                    b.Property<bool>("IsMember");
+
+                    b.Property<bool>("IsPakcageTicket");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<string>("MembershipKey");
+
+                    b.Property<decimal>("Miscellaneous");
+
+                    b.Property<string>("MobileNunber");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<int>("MovieTime");
 
                     b.Property<string>("Name");
 
-                    b.Property<bool>("isPakcageTicket");
+                    b.Property<int>("NumberofAdults");
+
+                    b.Property<int>("NumberofChildren");
+
+                    b.Property<int>("NumberofFamilies");
+
+                    b.Property<int>("NumberofStudents");
+
+                    b.Property<string>("PaymentMode");
+
+                    b.Property<int>("PaymentStatus");
+
+                    b.Property<string>("RequestId");
+
+                    b.Property<int>("TicketType");
+
+                    b.Property<int>("TicketsMode");
+
+                    b.Property<decimal>("TotalAmount");
+
+                    b.Property<Guid>("UserId");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CounterFK");
+
+                    b.HasIndex("CouponFK")
+                        .IsUnique()
+                        .HasFilter("[CouponFK] IS NOT NULL");
+
+                    b.HasIndex("RequestId")
+                        .IsUnique()
+                        .HasFilter("[RequestId] IS NOT NULL");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("Tickets");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.TicketCouponLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("CouponFk");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<Guid>("TicketFK");
+
+                    b.Property<Guid>("UserFk");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CouponFk");
+
+                    b.HasIndex("TicketFK");
+
+                    b.HasIndex("UserFk");
+
+                    b.ToTable("TicketCouponLink");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.TicketGroupLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<Guid?>("GroupId");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<int>("NoofStudents");
+
+                    b.Property<int>("Noofteacher");
+
+                    b.Property<Guid?>("PackageId");
+
+                    b.Property<Guid>("TicketFK");
+
+                    b.Property<DateTime>("VistingDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("TicketFK")
+                        .IsUnique();
+
+                    b.ToTable("TicketGroupLink");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.TicketPackage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<Guid?>("ItemFK");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<Guid?>("PackageFK");
+
+                    b.Property<Guid>("TicketFK");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemFK");
+
+                    b.HasIndex("PackageFK");
+
+                    b.HasIndex("TicketFK");
+
+                    b.ToTable("TicketPackage");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.TicketPackageCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("CategoryFK");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<int>("Discount");
+
+                    b.Property<decimal>("DiscountAmount");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsGrouPackage");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<int>("NumberOfAdult");
+
+                    b.Property<int>("NumberOfComplimentary");
+
+                    b.Property<int>("NumberOfMinor");
+
+                    b.Property<int>("NumberOfTickets");
+
+                    b.Property<int>("NumberOfVisitor");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<decimal>("SoldPrice");
+
+                    b.Property<Guid>("TicketPackageFK");
+
+                    b.Property<decimal>("TotalPrice");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryFK");
+
+                    b.HasIndex("TicketPackageFK");
+
+                    b.ToTable("TicketPackageCategory");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.TicketPackageItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("CategoryFK");
+
+                    b.Property<decimal>("CommissionAmount");
+
+                    b.Property<decimal>("CommissionPercentage");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<Guid>("ItemFk");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<int>("NumberOfComplimentary");
+
+                    b.Property<int>("NumberOfTicket");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<decimal>("SoldPrice");
+
+                    b.Property<Guid>("TicketFK");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryFK");
+
+                    b.HasIndex("ItemFk");
+
+                    b.HasIndex("TicketFK");
+
+                    b.ToTable("TicketItem");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.TicketSchoolLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("DocumentName");
+
+                    b.Property<string>("DocumentPath");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<int>("NoofStudents");
+
+                    b.Property<int>("Noofteacher");
+
+                    b.Property<Guid?>("SchoolFK");
+
+                    b.Property<Guid>("TicketFK");
+
+                    b.Property<DateTime>("VistingDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SchoolFK");
+
+                    b.HasIndex("TicketFK")
+                        .IsUnique();
+
+                    b.ToTable("TicketSchoolLink");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.TicketTimming", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<Guid>("TicketFK");
+
+                    b.Property<Guid>("TimmingFK");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TicketFK");
+
+                    b.HasIndex("TimmingFK");
+
+                    b.ToTable("TicketTimming");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Unit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Unit","Inventory");
                 });
 
             modelBuilder.Entity("Science.City.EF.dbmodel.Models.UserAccessPermission", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
 
                     b.Property<string>("UserConfig");
 
@@ -219,19 +1703,446 @@ namespace Science.City.EF.dbmodel.Migrations
                     b.ToTable("UserAccessPermission");
                 });
 
-            modelBuilder.Entity("Science.City.EF.dbmodel.Models.ApplicationUserDetail", b =>
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.UserPayment", b =>
                 {
-                    b.HasOne("AccountCore.DataModels.ApplicationUsers", "applicationUsers")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("Detail");
+
+                    b.Property<Guid>("FK_TicketId");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<int>("PaymentMode");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FK_TicketId");
+
+                    b.ToTable("UserPayments");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.UserReportLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsSync");
+
+                    b.Property<DateTime>("ModifyOn");
+
+                    b.Property<Guid>("ReportFK");
+
+                    b.Property<Guid>("UserFK");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReportFK");
+
+                    b.HasIndex("UserFK");
+
+                    b.ToTable("UserReportLink");
+                });
+
+            modelBuilder.Entity("EF.dbmodel.Models.MemberShipVisit", b =>
+                {
+                    b.HasOne("EF.dbmodel.Models.ApplicationUsers", "applicationUsers")
+                        .WithMany("MemberShipVisits")
+                        .HasForeignKey("FKUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("EF.dbmodel.Models.UserDetail", b =>
+                {
+                    b.HasOne("EF.dbmodel.Models.ApplicationUsers", "applicationUsers")
+                        .WithOne("UserDetail")
+                        .HasForeignKey("EF.dbmodel.Models.UserDetail", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Coupon", b =>
+                {
+                    b.HasOne("EF.dbmodel.Models.ApplicationUsers", "User")
+                        .WithMany()
+                        .HasForeignKey("UserFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Group", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Ticket", "ticket")
+                        .WithMany()
+                        .HasForeignKey("ticketId");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.GroupDocumentLink", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Group", "Group")
+                        .WithMany("GroupDocumentLink")
+                        .HasForeignKey("GroupFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("EF.dbmodel.Models.ApplicationUsers", "ApplicationUsers")
+                        .WithMany()
+                        .HasForeignKey("UserFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Inventory", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Science.City.EF.dbmodel.Models.Shop", "Shop")
+                        .WithMany()
+                        .HasForeignKey("ShopFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Science.City.EF.dbmodel.Models.Unit", "Unit")
+                        .WithMany("Inventory")
+                        .HasForeignKey("UnitFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("EF.dbmodel.Models.ApplicationUsers", "User")
+                        .WithMany()
+                        .HasForeignKey("UserFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Item", b =>
+                {
+                    b.HasOne("EF.dbmodel.Models.ApplicationUsers", "applicationUsers")
+                        .WithMany()
+                        .HasForeignKey("User_id");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.ItemCategoryLink", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Category", "Category")
+                        .WithMany("ItemCategory")
+                        .HasForeignKey("CategoryFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Science.City.EF.dbmodel.Models.Item", "Item")
+                        .WithMany("ItemCategory")
+                        .HasForeignKey("ItemFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.ItemSittingPlan", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.ItemTimming", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Item", "Item")
+                        .WithMany("ItemTimming")
+                        .HasForeignKey("ItemFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.ItemUserLink", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("EF.dbmodel.Models.ApplicationUsers", "User")
+                        .WithMany()
+                        .HasForeignKey("UserFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.MemberShip", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("EF.dbmodel.Models.ApplicationUsers", "User")
+                        .WithMany()
+                        .HasForeignKey("UserFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.ParkingTicket", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Counter", "Counter")
+                        .WithMany()
+                        .HasForeignKey("CounterFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Science.City.EF.dbmodel.Models.ParkingCategory", "ParkingCategory")
+                        .WithMany()
+                        .HasForeignKey("ParkingCategoryFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("EF.dbmodel.Models.ApplicationUsers", "User")
+                        .WithMany()
+                        .HasForeignKey("UserFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Payment", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.MemberShip", "MemberShip")
+                        .WithMany()
+                        .HasForeignKey("MemberShipFK");
+
+                    b.HasOne("Science.City.EF.dbmodel.Models.Ticket", "Ticket")
+                        .WithMany("Payment")
+                        .HasForeignKey("TicketFK");
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Product", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.ProductCategory", "ProductCategory")
+                        .WithMany()
+                        .HasForeignKey("ProductCategoryFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("EF.dbmodel.Models.ApplicationUsers", "User")
+                        .WithMany()
+                        .HasForeignKey("UserFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Sale", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Shop", "Shop")
+                        .WithMany()
+                        .HasForeignKey("ShopFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("EF.dbmodel.Models.ApplicationUsers", "User")
+                        .WithMany()
+                        .HasForeignKey("UserFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.SaleLink", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Inventory", "Inventory")
+                        .WithMany()
+                        .HasForeignKey("InventoryFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Science.City.EF.dbmodel.Models.Sale", "Sale")
+                        .WithMany("SaleLink")
+                        .HasForeignKey("SaleFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.School", b =>
+                {
+                    b.HasOne("EF.dbmodel.Models.ApplicationUsers", "ApplicationUsers")
+                        .WithMany()
+                        .HasForeignKey("UserFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Shift", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Counter", "Counter")
+                        .WithMany()
+                        .HasForeignKey("CounterFK");
+
+                    b.HasOne("EF.dbmodel.Models.ApplicationUsers", "User")
+                        .WithMany()
+                        .HasForeignKey("UserFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Shop", b =>
+                {
+                    b.HasOne("EF.dbmodel.Models.ApplicationUsers", "ApplicationUsers")
+                        .WithMany()
+                        .HasForeignKey("UserFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.SpecialDiscountLink", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemFK");
+
+                    b.HasOne("Science.City.EF.dbmodel.Models.Packages", "Packages")
+                        .WithMany("SpecialDiscountLink")
+                        .HasForeignKey("PackageFK");
+
+                    b.HasOne("Science.City.EF.dbmodel.Models.SpecialDiscount", "SpecialDiscount")
+                        .WithMany("SpecialDiscountLink")
+                        .HasForeignKey("SpecialDiscountFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.SubUnit", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Unit", "Unit")
+                        .WithMany("SubUnit")
+                        .HasForeignKey("UnitFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.Ticket", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Counter", "Counter")
+                        .WithMany()
+                        .HasForeignKey("CounterFK");
+
+                    b.HasOne("Science.City.EF.dbmodel.Models.Coupon", "Coupon")
+                        .WithOne("Ticket")
+                        .HasForeignKey("Science.City.EF.dbmodel.Models.Ticket", "CouponFK");
+
+                    b.HasOne("EF.dbmodel.Models.ApplicationUsers", "applicationUsers")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.TicketCouponLink", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Coupon", "StaffCoupon")
+                        .WithMany()
+                        .HasForeignKey("CouponFk")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Science.City.EF.dbmodel.Models.Ticket", "Ticket")
+                        .WithMany()
+                        .HasForeignKey("TicketFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("EF.dbmodel.Models.ApplicationUsers", "ApplicationUsers")
+                        .WithMany()
+                        .HasForeignKey("UserFk")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.TicketGroupLink", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId");
+
+                    b.HasOne("Science.City.EF.dbmodel.Models.Ticket", "Ticket")
+                        .WithOne("TicketGroupLink")
+                        .HasForeignKey("Science.City.EF.dbmodel.Models.TicketGroupLink", "TicketFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.TicketPackage", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemFK");
+
+                    b.HasOne("Science.City.EF.dbmodel.Models.Packages", "Package")
+                        .WithMany()
+                        .HasForeignKey("PackageFK");
+
+                    b.HasOne("Science.City.EF.dbmodel.Models.Ticket", "Ticket")
+                        .WithMany("TicketPackage")
+                        .HasForeignKey("TicketFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.TicketPackageCategory", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryFK");
+
+                    b.HasOne("Science.City.EF.dbmodel.Models.TicketPackage", "TicketPackage")
+                        .WithMany("TicketPackageCategory")
+                        .HasForeignKey("TicketPackageFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.TicketPackageItem", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Science.City.EF.dbmodel.Models.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemFk")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Science.City.EF.dbmodel.Models.Ticket", "Ticket")
+                        .WithMany("TicketItem")
+                        .HasForeignKey("TicketFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.TicketSchoolLink", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.School", "School")
+                        .WithMany()
+                        .HasForeignKey("SchoolFK");
+
+                    b.HasOne("Science.City.EF.dbmodel.Models.Ticket", "Ticket")
+                        .WithOne("TicketSchoolLink")
+                        .HasForeignKey("Science.City.EF.dbmodel.Models.TicketSchoolLink", "TicketFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.TicketTimming", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Ticket", "Ticket")
+                        .WithMany("TicketTimming")
+                        .HasForeignKey("TicketFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Science.City.EF.dbmodel.Models.ItemTimming", "Timming")
+                        .WithMany()
+                        .HasForeignKey("TimmingFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Science.City.EF.dbmodel.Models.UserAccessPermission", b =>
                 {
-                    b.HasOne("AccountCore.DataModels.ApplicationUsers", "applicationUsers")
+                    b.HasOne("EF.dbmodel.Models.ApplicationUsers", "applicationUsers")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.UserPayment", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Ticket", "ticket")
+                        .WithMany()
+                        .HasForeignKey("FK_TicketId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Science.City.EF.dbmodel.Models.UserReportLink", b =>
+                {
+                    b.HasOne("Science.City.EF.dbmodel.Models.Report", "Report")
+                        .WithMany()
+                        .HasForeignKey("ReportFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("EF.dbmodel.Models.ApplicationUsers", "User")
+                        .WithMany()
+                        .HasForeignKey("UserFK")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

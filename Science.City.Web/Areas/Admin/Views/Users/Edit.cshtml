@@ -1,0 +1,141 @@
+﻿@model Science.City.Web.ViewModels.RegiterViewModelWithRole
+@using static Science.City.EF.Service.Helpers.Common;
+@{
+	ViewData["Title"] = "Create";
+	Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<div class="breadcrumbs">
+	<div class="col-sm-12">
+		<div class="page-header">
+			<div class="page-title">
+				<ol class="breadcrumb text-right">
+					<li class="breadcrumb-item"><a href="@Url.Action("Index","Users",new{id=""})">User</a></li>
+					<li class="breadcrumb-item active">Edit User</li>
+				</ol>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<form asp-antiforgery="true" autocomplete="off" method="post">
+			<div class="row">
+				@Html.HiddenFor(m => m.Id);
+				<div asp-validation-summary="ModelOnly"></div>
+				@if (ViewData.ModelState.Any())
+				{
+					await Html.RenderPartialAsync("_message", ViewData.ModelState);
+				}
+				<div class="col-12 col-sm-12 col-md-8 offset-md-2">
+					<div class="row">
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label asp-for="FirstName"></label>
+								<input asp-for="FirstName" class="form-control" placeholder="First Name" />
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label asp-for="LastName"></label>
+								<input asp-for="LastName" class="form-control" placeholder="Last Name" />
+
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label asp-for="Email"></label>
+								<input asp-for="Email" class="form-control" placeholder="Email Name" />
+
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label asp-for="MobileNo"></label>
+								<input asp-for="MobileNo" class="form-control" placeholder="Mobile No" />
+
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label asp-for="CountryFK"></label>
+								<select asp-for="CountryFK" class="form-control country"
+										asp-items="@GetCountry()"></select>
+								<span asp-validation-for="CountryFK" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label asp-for="StateFK"></label>
+								<select asp-for="StateFK" class="form-control state"
+										asp-items="@GetState(Model.CountryFK.ToString())"></select>
+								<span asp-validation-for="StateFK" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label asp-for="CityFK"></label>
+								<select asp-for="CityFK" class="form-control city"
+										asp-items="@GetCity(Model.StateFK.ToString())"></select>
+								<span asp-validation-for="CityFK" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label asp-for="RoleId"></label>
+								<select asp-for="RoleId" class="form-control" asp-items="@Model.GetRoles">
+									<option>Please select one</option>
+								</select>
+								<span asp-validation-for="RoleId" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label asp-for="GSTNumber"></label>
+								<input asp-for="GSTNumber" type="text" class="form-control" placeholder="GST Number" />
+								<span asp-validation-for="GSTNumber" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label asp-for="PressReporterName"></label>
+								<input asp-for="PressReporterName" type="text" class="form-control" placeholder="Press Reporter Name" />
+								<span asp-validation-for="PressReporterName" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label asp-for="NewsPaperCompany"></label>
+								<input asp-for="NewsPaperCompany" type="text" class="form-control" placeholder="News Paper Company" />
+								<span asp-validation-for="NewsPaperCompany" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label asp-for="PressIDCard"></label>
+								<input asp-for="PressIDCard" type="text" class="form-control" placeholder="Press ID Card" />
+								<span asp-validation-for="PressIDCard" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-12 col-sm-12">
+							<div class="form-group checkbox-wrap row">
+								<div class="col-12 col-md-1">
+									<input asp-for="IsLocked" class="form-control" />
+									<label>IsActive</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-12 col-sm-12">
+							<div class="form-group">
+								<a asp-action="Detail" class="btn btn-primary" asp-route-id="@Model.Id">Back</a>
+								<button type="submit" class="btn btn-primary">Update</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+
+
